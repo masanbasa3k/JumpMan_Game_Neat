@@ -5,6 +5,8 @@ import os
 import random
 pygame.font.init()
 
+GEN = 0
+
 WIN_WIDTH = 500
 WIN_HEIGHT = 800
 
@@ -142,7 +144,7 @@ class Base:
         win.blit(self.IMG, (self.x1, self.y))
         win.blit(self.IMG, (self.x2, self.y))
 
-def draw_window(win, players, pipes, base, score):
+def draw_window(win, players, pipes, base, score, gen):
     win.blit(BG_IMG, (0,0))
 
     for pipe in pipes:
@@ -151,12 +153,17 @@ def draw_window(win, players, pipes, base, score):
     text = STAT_FONT.render("Score: " + str(score), 1, (85,0,0))
     win.blit(text, (WIN_WIDTH - 10 - text.get_width(), 10))
 
+    text = STAT_FONT.render("Gen: " + str(gen), 1, (85,0,0))
+    win.blit(text, (10, 10))
+
     base.draw(win)
     for player in players:
         player.draw(win)
     pygame.display.update()
 
 def main(genomes, config):
+    global GEN
+    GEN += 1
     nets = []
     ge = []
     players = []
@@ -234,7 +241,7 @@ def main(genomes, config):
                 ge.pop(x)
 
         base.move()
-        draw_window(win, players, pipes, base, score)
+        draw_window(win, players, pipes, base, score, GEN)
 
     
 def run(config_path):
